@@ -74,7 +74,3 @@ The frontend will be available at `http://localhost:5173`.
 
 This project is fully configured for deployment on **Vercel**. 
 Simply connect your GitHub repository to Vercel, and ensure you add the Environment Variables under the project settings before deploying. The `vercel.json` file handles all routing and serverless backend configurations automatically.
-
-## 📄 License
-
-This project is licensed under the ISC License.
