@@ -8,6 +8,9 @@
 import "dotenv/config"; // Environment variable loading (Node.js: Server Setup)
 import app from "./src/app.js";
 import connectDB from "./src/config/db.config.js";
+import path from "path";
+
+const __dirname = path.resolve();
 
 const PORT = process.env.PORT || 5000;
 

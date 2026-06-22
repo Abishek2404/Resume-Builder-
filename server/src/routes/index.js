@@ -6,6 +6,11 @@ import versionRoutes from './version.routes.js';
 
 const router = Router();
 
+// ✅ Base test route (IMPORTANT)
+router.get('/', (req, res) => {
+  res.json({ message: 'API working' });
+});
+
 router.use('/auth', authRoutes);
 router.use('/resumes', resumeRoutes);
 router.use('/ai', aiRoutes);

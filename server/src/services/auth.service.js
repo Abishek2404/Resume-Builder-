@@ -13,9 +13,25 @@ import { generateToken } from '../utils/jwt.utils.js';
 export const register = async (name, email, password) => {
   const existing = await User.findOne({ email });
   if (existing) {
-    const error = new Error('Email already registered.');
-    error.statusCode = 409;
-    throw error;
+    // If the user exists and already has a password, block duplicate registration
+    if (existing.password) {
+      const error = new Error('Email already registered.');
+      error.statusCode = 409;
+      throw error;
+    }
+
+    // If the user exists via Google (no password), allow them to set a password to complete registration
+    const hashedPassword = await bcrypt.hash(password, 10);
+    existing.name = name || existing.name;
+    existing.password = hashedPassword;
+    existing.lastLogin = new Date();
+    await existing.save();
+    const token = generateToken(existing);
+
+    return {
+      token,
+      user: { id: existing._id, email: existing.email, name: existing.name, picture: existing.picture },
+    };
   }
 
   const hashedPassword = await bcrypt.hash(password, 10); // bcrypt password hashing (Express.js: Authentication)

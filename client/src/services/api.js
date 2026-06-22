@@ -1,11 +1,22 @@
-// ============================================
-// api.js - Fetch Wrapper with Auth Token
-// ============================================
-// Reference: fetch(), async/await - reference-javascript.md
+const rawBase = import.meta.env.VITE_API_URL;
+let BASE_URL;
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+if (rawBase) {
+  BASE_URL = rawBase.replace(/\/$/, '');
+} else if (import.meta.env.PROD) {
+  BASE_URL = '';
+} else {
+  BASE_URL = 'http://localhost:5000';
+}
+
+if (BASE_URL && !BASE_URL.endsWith('/api')) {
+  BASE_URL = `${BASE_URL}/api`;
+} else if (!BASE_URL) {
+  BASE_URL = '/api';
+}
 
 const fetchApi = async (endpoint, options = {}) => {
+
   const token = localStorage.getItem('token');
   const headers = { ...options.headers };
 
